@@ -1,0 +1,129 @@
+/* ==========================================================================
+   Starlabs FAQ — Base Styles (themeable, accessible, print-friendly)
+   ========================================================================== */
+
+:root{
+  --faq-bg:#fff;
+  --faq-bg-open:#fafaff;
+  --faq-border:#e5e7eb;
+  --faq-border-strong:#d1d5db;
+  --faq-text:#0f172a;
+  --faq-muted:#6b7280;
+  --faq-accent:#7115ff;
+  --faq-radius:12px;
+  --faq-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root{
+    --faq-bg:#0b0b11;
+    --faq-bg-open:#0f0f18;
+    --faq-border:#222436;
+    --faq-border-strong:#2c2f45;
+    --faq-text:#e8e8ff;
+    --faq-muted:#a3a3b2;
+    --faq-accent:#8b61ff;
+  }
+}
+
+.starlabs-faqs { color: var(--faq-text); }
+
+/* Tabs */
+.starlabs-faqs .faq-tabs{
+  display:flex; gap:8px; align-items:center;
+  padding:8px; margin:0 0 16px;
+  border-bottom:1px solid var(--faq-border);
+  overflow:auto;
+}
+.starlabs-faqs .faq-tab{
+  appearance:none; border:1px solid var(--faq-border);
+  background:var(--faq-bg); color:var(--faq-text);
+  padding:8px 12px; border-radius:999px;
+  font:500 14px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  cursor:pointer; white-space:nowrap;
+  transition:border-color .2s, background-color .2s, color .2s, box-shadow .2s, transform .06s ease-in-out;
+}
+.starlabs-faqs .faq-tab:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px color-mix(in oklab, var(--faq-accent) 15%, transparent);
+}
+.starlabs-faqs .faq-tab:hover{
+  border-color:var(--faq-border-strong); box-shadow:var(--faq-shadow);
+}
+.starlabs-faqs .faq-tab:active{ transform:scale(.98); }
+.starlabs-faqs .faq-tab.is-active{
+  background:var(--faq-accent); color:#fff; border-color:var(--faq-accent);
+}
+
+/* FAQ items */
+.starlabs-faqs .faq-list .faq-item{
+  background:var(--faq-bg);
+  border:1px solid var(--faq-border);
+  border-radius:var(--faq-radius);
+  margin:0 0 12px;
+  overflow:hidden;
+  transition:background-color .2s, border-color .2s, box-shadow .2s;
+  box-shadow: var(--faq-shadow);
+}
+.starlabs-faqs .faq-list .faq-item[open]{
+  background:var(--faq-bg-open);
+  border-color:var(--faq-border-strong);
+}
+
+/* Summary + badge */
+.starlabs-faqs .faq-list .faq-item > summary{
+  cursor:pointer; padding:14px 18px; list-style:none; color:var(--faq-text);
+  position:relative; font-weight:600;
+  padding-right:130px; /* space for badge on right */
+}
+.starlabs-faqs .faq-list .faq-item > summary::-webkit-details-marker{ display:none; }
+.starlabs-faqs .faq-list .faq-item > summary:focus-visible{
+  outline:none;
+  box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--faq-accent) 30%, transparent);
+  border-radius: calc(var(--faq-radius) - 2px);
+}
+.starlabs-faqs .faq-badge{
+  position:absolute; right:14px; top:12px;
+  display:inline-block;
+  font:600 12px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  padding:6px 8px; border-radius:999px;
+  border:1px solid var(--faq-border);
+  background:var(--faq-bg); color:var(--faq-muted);
+}
+
+/* Chevron */
+.starlabs-faqs .faq-list .faq-item > summary::before{
+  content:""; position:absolute; left:14px; top:50%;
+  width:10px; height:10px; border-right:2px solid currentColor; border-bottom:2px solid currentColor;
+  transform: translateY(-50%) rotate(-45deg);
+  transition: transform .2s ease;
+  opacity:.9;
+}
+.starlabs-faqs .faq-list .faq-item > summary{ padding-left:36px; }
+.starlabs-faqs .faq-list .faq-item[open] > summary::before{
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* Content + motion */
+.starlabs-faqs .faq-list .faq-item > .faq-content{
+  padding:0 18px 16px; color:var(--faq-text);
+  animation: faqSlideDown .25s ease both;
+}
+.starlabs-faqs .faq-list .faq-item:not([open]) > .faq-content{ display:none; }
+@keyframes faqSlideDown { from { opacity:0; transform: translateY(-2px); } to { opacity:1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .starlabs-faqs .faq-list .faq-item > .faq-content{ animation:none; }
+}
+
+/* Filtering */
+.starlabs-faqs .faq-list .faq-item.is-hidden{ display:none !important; }
+.starlabs-faqs .faq-empty,
+.starlabs-faqs .faq-empty-category{ color:var(--faq-muted); margin:8px 0; }
+
+/* Print */
+@media print {
+  .starlabs-faqs .faq-tabs{ display:none !important; }
+  .starlabs-faqs .faq-list .faq-item{ border:0; box-shadow:none; background:#fff; }
+  .starlabs-faqs .faq-list .faq-item > .faq-content{ display:block !important; padding:0 0 12px; }
+  .starlabs-faqs .faq-list .faq-item > summary{ padding:0 0 6px; font-weight:700; }
+}
